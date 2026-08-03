@@ -77,7 +77,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Update cask
-        run: ./script/update-keyty-cask.sh "${{ steps.release.outputs.version }}" "${{ steps.release.outputs.dmg_url }}" "${{ steps.release.outputs.sha256 }}"
+        run: ./script/update-keyty-cask.sh "${{ steps.release.outputs.version }}" "${{ steps.release.outputs.sha256 }}"
 
       - name: Create branch and commit
         id: commit

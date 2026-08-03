@@ -2,14 +2,13 @@
 
 set -euo pipefail
 
-if [[ $# -ne 3 ]]; then
-  echo "usage: $0 <version> <dmg_url> <sha256>" >&2
+if [[ $# -ne 2 ]]; then
+  echo "usage: $0 <version> <sha256>" >&2
   exit 1
 fi
 
 version="$1"
-dmg_url="$2"
-sha256="$3"
+sha256="$2"
 cask_path="Casks/keyty.rb"
 
 if [[ ! -f "$cask_path" ]]; then
@@ -17,7 +16,7 @@ if [[ ! -f "$cask_path" ]]; then
   exit 1
 fi
 
-VERSION="$version" DMG_URL="$dmg_url" SHA256_VALUE="$sha256" CASK_PATH="$cask_path" ruby <<'RUBY'
+VERSION="$version" SHA256_VALUE="$sha256" CASK_PATH="$cask_path" ruby <<'RUBY'
 path = ENV.fetch("CASK_PATH")
 content = File.read(path)
 
@@ -25,8 +24,6 @@ content.sub!(/^\s*version\s+"[^"]+"/, %(  version "#{ENV.fetch("VERSION")}")) or
   abort("failed to update version in #{path}")
 content.sub!(/^\s*sha256\s+"[^"]+"/, %(  sha256 "#{ENV.fetch("SHA256_VALUE")}")) or
   abort("failed to update sha256 in #{path}")
-content.sub!(/^\s*url\s+"[^"]+",?/, %(  url "#{ENV.fetch("DMG_URL")}",)) or
-  abort("failed to update url in #{path}")
 
 File.write(path, content)
 RUBY
