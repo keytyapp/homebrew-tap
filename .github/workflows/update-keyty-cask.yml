@@ -77,13 +77,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Update cask
-        run: ./script/update-keyty-cask.sh "${{ steps.release.outputs.version }}" "${{ steps.release.outputs.dmg_url }}" "${{ steps.release.outputs.sha256 }}"
-
-      - name: Tap checked-out repo
-        run: brew tap --custom-remote keytyapp/tap "$GITHUB_WORKSPACE"
-
-      - name: Audit cask
-        run: brew audit --cask --online keytyapp/tap/keyty
+        run: ./script/update-keyty-cask.sh "${{ steps.release.outputs.version }}" "${{ steps.release.outputs.sha256 }}"
 
       - name: Create branch and commit
         id: commit
@@ -101,9 +95,20 @@ jobs:
 
           git add Casks/keyty.rb
           git commit -m "keyty ${{ steps.release.outputs.version }}"
-          git push --force-with-lease --set-upstream origin "$branch"
 
           echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Tap checked-out repo
+        if: steps.commit.outputs.changed == 'true'
+        run: brew tap --custom-remote keytyapp/tap "$GITHUB_WORKSPACE"
+
+      - name: Audit cask
+        if: steps.commit.outputs.changed == 'true'
+        run: brew audit --cask keytyapp/tap/keyty
+
+      - name: Push branch
+        if: steps.commit.outputs.changed == 'true'
+        run: git push --force-with-lease --set-upstream origin "${{ steps.release.outputs.branch }}"
 
       - name: Create or reuse pull request
         if: steps.commit.outputs.changed == 'true'
