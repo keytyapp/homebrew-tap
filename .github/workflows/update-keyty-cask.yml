@@ -80,7 +80,7 @@ jobs:
         run: ./script/update-keyty-cask.sh "${{ steps.release.outputs.version }}" "${{ steps.release.outputs.dmg_url }}" "${{ steps.release.outputs.sha256 }}"
 
       - name: Audit cask
-        run: brew audit --cask --online Casks/keyty.rb
+        run: brew audit --cask --online keyty
 
       - name: Create branch and commit
         id: commit
