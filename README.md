@@ -1,11 +1,11 @@
 # Keyty - Homebrew Tap
 
-Install Keyty:
+Keyty is now maintained in the official Homebrew Cask tap. Install it with:
 
 ```sh
-brew install --cask keytyapp/tap/keyty
+brew install --cask keyty
 ```
 
-Visit [keyty.app](https://keyty.app) for more information.
+Existing users of this tap are migrated to `homebrew/cask` by Homebrew on update.
 
-Automation details for release-driven cask updates live in [docs/update-keyty-cask.md](/Users/esphynox/Projects/homebrew-tap/docs/update-keyty-cask.md).
+Visit [keyty.app](https://keyty.app) for more information.
